@@ -1,10 +1,9 @@
 from fastapi import FastAPI
 
-app = FastAPI()
+app = FastAPI(title="Knowledge Center")
 
 
 @app.get("/health")
-def read_root():
-    return  {"status": "ok"}
-
+def health_check()-> dict[str, str]:
+    return {"status": "ok"}
 
