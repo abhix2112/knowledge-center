@@ -166,6 +166,8 @@ An **AI-powered Knowledge Center** (similar in spirit to the ServiceNow Knowledg
 - **Learn:** uv workflow, project layout, environment config.
 
 ### Phase 1A — Foundations, lite (Days 1–3)
+
+> **Status (2026-11-01): done, built by Claude** so I could focus on the AI phases. It's simpler than the original spec below: psycopg 3 with plain SQL instead of SQLAlchemy, `schema.sql` applied on startup instead of Alembic, sync `def` endpoints, and full JWT login (register / login / me) instead of the `user_id` stub. Also includes a plain HTML/JS frontend, 25 demo articles (`seed/articles/`) and 17 API tests. **From Phase 3 (RAG) on, I write the code myself.** I still need to read through this code to learn the Python patterns in it.
 - **Build:**
   - **Auth stub:** `get_current_user` dependency that reads a `user_id` from a header (or a fixed dev user). This is the *single seam* that full JWT replaces in Phase 1B — endpoints never change. Ownership and visibility already work off this `user_id`, so Phase 4's permission-aware retrieval is testable with multiple users.
   - Articles CRUD with lifecycle: `draft → published → retired`, ownership, visibility, **versioning** (`article_versions`, `content_hash`).
@@ -406,8 +408,8 @@ Beyond "I built a RAG app", a senior AI engineer is expected to discuss:
 ## 9. Progress tracker
 
 **Track 1 — AI core (target: Day 20)**
-- [ ] Phase 0 — Setup (+ `NOTES.md` created)
-- [ ] Phase 1A — Foundations, lite
+- [x] Phase 0 — Setup (`NOTES.md` still to create)
+- [x] Phase 1A — Foundations, lite (built by Claude, simplified; see Phase 1A status)
 - [ ] 🎤 Mock interview 1
 - [ ] Phase 3 — RAG core
 - [ ] 🎤 Mock interview 2
@@ -422,7 +424,7 @@ Beyond "I built a RAG app", a senior AI engineer is expected to discuss:
 - [ ] ✅ Day 20 milestone
 
 **Track 2 — Foundations, hardening, cloud**
-- [ ] Phase 1B — Full auth
+- [ ] Phase 1B — Full auth (register/login/JWT already done; refresh tokens and roles remain)
 - [ ] Phase 2 — Ingestion pipeline with real queue
 - [ ] Phase 7 — Multi-agent pipeline
 - [ ] Phase 9 — Security & hardening (incl. routing/fallbacks, caching v2)

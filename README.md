@@ -30,25 +30,52 @@ An AI-powered knowledge base built with **FastAPI**: write and version knowledge
 
 ## Getting started
 
-**Prerequisites:** [uv](https://docs.astral.sh/uv/) installed. uv installs the correct Python version automatically.
+**Prerequisites:** [uv](https://docs.astral.sh/uv/) and Docker. uv installs the correct Python version automatically.
 
 ```bash
 git clone <repo-url>
 cd knowledge_center
-uv sync          # creates .venv and installs dependencies
+uv sync                                    # create .venv and install dependencies
+cp .env.example .env                       # then set JWT_SECRET to a long random string
+docker compose up -d                       # start Postgres with pgvector
+uv run python -m knowledge_center.seed     # load 25 demo articles and 3 demo users
+uv run fastapi dev src/knowledge_center/main.py
 ```
 
-Run commands inside the project environment with `uv run`. There's no need to activate `.venv`. Commands for running the API, database and tests will be added here as each part is built.
+Open http://127.0.0.1:8000 for the app, and http://127.0.0.1:8000/docs for the API.
+
+Demo users (password `password123`): `alice@halden.example`, `bob@halden.example`, `priya@halden.example`.
+
+Other commands:
+
+```bash
+uv run pytest                                      # API tests (use a separate test database)
+uv run python -m knowledge_center.seed --reset     # delete everything and reload the demo data
+```
+
+Run every command from the project folder. There's no need to activate `.venv`; `uv run` uses it.
 
 ## Project structure
 
 ```
 knowledge_center/
-├── src/knowledge_center/   # application code
-├── PROJECT_PLAN.md         # roadmap, phases, design decisions
-├── NOTES.md                # problems hit, root causes and fixes (added in Phase 0)
-├── pyproject.toml          # project metadata and dependencies
-└── uv.lock                 # locked dependency versions
+├── src/knowledge_center/
+│   ├── main.py          # creates the app, mounts the API and the frontend
+│   ├── config.py        # settings from .env
+│   ├── db.py            # Postgres connection pool
+│   ├── schema.sql       # tables (applied on startup)
+│   ├── schemas.py       # request/response models (Pydantic)
+│   ├── security.py      # password hashing, JWT
+│   ├── auth.py          # /api/auth: register, login, me
+│   ├── articles.py      # /api/articles: CRUD, lifecycle, versions
+│   ├── documents.py     # /api/documents: upload → draft article
+│   ├── extract.py       # text from PDF, DOCX, Markdown
+│   └── seed.py          # demo data loader
+├── frontend/            # plain HTML/CSS/JS, served by FastAPI at /
+├── seed/articles/       # demo articles as Markdown files
+├── tests/               # pytest API tests
+├── compose.yaml         # Postgres + pgvector
+└── PROJECT_PLAN.md      # roadmap, phases, design decisions
 ```
 
 ## Roadmap

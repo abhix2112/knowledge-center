@@ -13,3 +13,5 @@ wheels/
 .env.*
 !.env.example
 .My_daiiry
+# Uploaded files
+storage/

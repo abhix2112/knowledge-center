@@ -9,7 +9,12 @@ authors = [
 requires-python = ">=3.12"
 dependencies = [
     "fastapi[standard]>=0.162.0",
+    "psycopg[binary,pool]>=3.3.6",
+    "pwdlib[argon2]>=0.3.1",
     "pydantic-settings>=2.16.2",
+    "pyjwt>=2.15.1",
+    "pypdf>=6.21.4",
+    "python-docx>=1.2.0",
 ]
 
 [project.scripts]
@@ -18,3 +23,8 @@ knowledge-center = "knowledge_center:main"
 [build-system]
 requires = ["uv_build>=0.12.19,<0.13.0"]
 build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+]
